@@ -11,6 +11,7 @@ class App extends Component {
     this.handlePlay = this.handlePlay.bind(this)
     this.handlePause = this.handlePause.bind(this)
     this.renderSeekPos = this.renderSeekPos.bind(this)
+    this.onEnd = this.onEnd.bind(this)
     this.clearRAF = this.clearRAF.bind(this)
 
     this.state = {
@@ -75,6 +76,11 @@ class App extends Component {
     }
   }
 
+  onEnd(args) {
+    this.setState({playing: false});
+    this.clearRAF();
+  }
+
   clearRAF () {
     raf.cancel(this._raf)
   }
@@ -93,8 +99,10 @@ class App extends Component {
             src={['/assets/aller.mp3','/assets/retour.mp3']}
             preload
             playing={playing && isAller}
+            loop={false}
             ref={(ref) => (this.playerAller = ref)}
             onPlay={this.renderSeekPos}
+            onEnd={this.onEnd}
           />
         </div>
         <p>
@@ -108,8 +116,10 @@ class App extends Component {
             src='/assets/retour.mp3'
             preload
             playing={playing && !isAller}
+            loop={false}
             ref={(ref) => (this.playerRetour = ref)}
             onPlay={this.renderSeekPos}
+            onEnd={this.onEnd}
           />
         </div>
       </div>
